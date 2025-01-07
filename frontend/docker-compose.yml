@@ -1,5 +1,4 @@
-# docker-compose.deploy.yml
-version: '3.8'
+version: "3.8"
 
 volumes:
   userdb_vol:
@@ -9,14 +8,16 @@ volumes:
 networks:
   micro_network:
     name: micro_network
+    external: true
 
 services:
   user-api:
     container_name: cuser-service
+    image: cuser-service:latest
     build:
       context: ../user-service
     ports:
-    - "5001:5001"
+      - "5001:5001"
     depends_on:
       - user-db
     networks:
@@ -27,7 +28,7 @@ services:
     container_name: cuser_dbase
     image: mysql:8
     ports:
-    - "32000:3306"
+      - "32000:3306"
     environment:
       MYSQL_ROOT_PASSWORD: pfm_dc_2020
       MYSQL_DATABASE: user
@@ -36,14 +37,15 @@ services:
     networks:
       - micro_network
     volumes:
-    - userdb_vol:/var/lib/mysql
+      - userdb_vol:/var/lib/mysql
 
   product-api:
     container_name: cproduct-service
+    image: cproduct-service:latest
     build:
       context: ../product-service
     ports:
-    - "5002:5002"
+      - "5002:5002"
     depends_on:
       - product-db
     networks:
@@ -54,7 +56,7 @@ services:
     container_name: cproduct_dbase
     image: mysql:8
     ports:
-    - "32001:3306"
+      - "32001:3306"
     environment:
       MYSQL_ROOT_PASSWORD: pfm_dc_2020
       MYSQL_DATABASE: product
@@ -63,14 +65,15 @@ services:
     networks:
       - micro_network
     volumes:
-    - productdb_vol:/var/lib/mysql
+      - productdb_vol:/var/lib/mysql
 
   order-api:
     container_name: corder-service
+    image: corder-service:latest
     build:
       context: ../order-service
     ports:
-    - "5003:5003"
+      - "5003:5003"
     depends_on:
       - order-db
     networks:
@@ -81,7 +84,7 @@ services:
     container_name: corder_dbase
     image: mysql:8
     ports:
-    - "32002:3306"
+      - "32002:3306"
     environment:
       MYSQL_ROOT_PASSWORD: pfm_dc_2020
       MYSQL_DATABASE: order
@@ -90,14 +93,15 @@ services:
     networks:
       - micro_network
     volumes:
-    - orderdb_vol:/var/lib/mysql
+      - orderdb_vol:/var/lib/mysql
 
   frontend-app:
     container_name: cfrontend-app
+    image: cfrontend-app:latest
     build:
       context: .
     ports:
-    - "5000:5000"
+      - "5000:5000"
     networks:
       - micro_network
     restart: always
