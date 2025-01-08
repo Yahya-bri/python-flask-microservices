@@ -1,6 +1,6 @@
 # application/models.py
 from . import db
-from datetime import datetime
+from datetime import datetime, timezone
 from flask_login import UserMixin
 from passlib.hash import sha256_crypt
 
@@ -30,12 +30,12 @@ class User(UserMixin, db.Model):
     is_admin = db.Column(db.Boolean, default=False)
     authenticated = db.Column(db.Boolean, default=False)
     api_key = db.Column(db.String(255), unique=True, nullable=True)
-    date_added = db.Column(db.DateTime, default=lambda: datetime.now(datetime.timezone.utc))
-    date_updated = db.Column(db.DateTime, onupdate=lambda: datetime.now(datetime.timezone.utc))
+    date_added = db.Column(db.DateTime, default=lambda: datetime.now(timezone.utc))
+    date_updated = db.Column(db.DateTime, onupdate=lambda: datetime.now(timezone.utc))
     role_groups = db.relationship('RoleGroup', secondary=user_role_group, backref=db.backref('user_role_groups', lazy=True))
 
     def encode_api_key(self):
-        self.api_key = sha256_crypt.hash(self.username + str(datetime.now(datetime.timezone.utc)))
+        self.api_key = sha256_crypt.hash(self.username + str(datetime.now(timezone.utc)))
 
     def encode_password(self):
         self.password = sha256_crypt.hash(self.password)

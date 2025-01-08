@@ -35,12 +35,12 @@ def get_users():
 
 @user_api_blueprint.route('/api/user/create', methods=['POST'])
 def post_register():
-    first_name = request.form['first_name']
-    last_name = request.form['last_name']
-    email = request.form['email']
-    username = request.form['username']
+    first_name = request.json['first_name']
+    last_name = request.json['last_name']
+    email = request.json['email']
+    username = request.json['username']
 
-    password = sha256_crypt.hash((str(request.form['password'])))
+    password = sha256_crypt.hash((str(request.json['password'])))
 
     user = User()
     user.email = email
@@ -60,10 +60,10 @@ def post_register():
 
 @user_api_blueprint.route('/api/user/login', methods=['POST'])
 def post_login():
-    username = request.form['username']
+    username = request.json['username']
     user = User.query.filter_by(username=username).first()
     if user:
-        if sha256_crypt.verify(str(request.form['password']), user.password):
+        if sha256_crypt.verify(str(request.json['password']), user.password):
             user.encode_api_key()
             db.session.commit()
             login_user(user)
