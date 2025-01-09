@@ -29,6 +29,14 @@ def create_app():
     admin.add_view(PermissionAdmin(Permission, db.session))
 
     with app.app_context():
+        # Create the database if it does not exist
+        try:
+            # Try to send a request to the database
+            db.session.execute('SELECT 1')
+        except Exception as e:
+            # If it fails, create the database
+            db.create_all()
+
         # Register blueprints
         from .mainApp import user_app_blueprint
         app.register_blueprint(user_app_blueprint, url_prefix='/user')
@@ -48,4 +56,4 @@ def create_app():
             db.session.add(super_user)
             db.session.commit()
 
-        return app
+    return app

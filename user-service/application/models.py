@@ -56,7 +56,8 @@ class User(UserMixin, db.Model):
             'id': self.id,
             'api_key': self.api_key,
             'is_active': True,
-            'is_admin': self.is_admin
+            'is_admin': self.is_admin,
+            'permissions': [permission.name for role_group in self.role_groups for permission in role_group.permissions]
         }
 
 

@@ -14,7 +14,13 @@ class UserClient:
         }
         api_url = os.getenv('API_URL', 'http://localhost:5001')
         response = requests.request(method="GET", url=f'{api_url}/api/user', headers=headers)
+
         if response.status_code == 401:
             return False
-        user = response.json()
+        
+        try:
+            user = response.json()
+        except requests.exceptions.JSONDecodeError:
+            return None
+        
         return user
