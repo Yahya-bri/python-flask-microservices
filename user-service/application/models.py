@@ -41,6 +41,9 @@ class User(UserMixin, db.Model):
     def encode_password(self):
         self.password = sha256_crypt.hash(self.password)
 
+    def check_password(self, password):
+        return sha256_crypt.verify(password, self.password)
+
     def __repr__(self):
         return '<User %r>' % (self.username)
 

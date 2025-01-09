@@ -8,7 +8,7 @@
 <body>
     <div class="container">
         <h2>Login</h2>
-        <form method="POST" action="{{ url_for('login') }}">
+        <form method="POST" action="{{ url_for('user_app.login') }}">
             {{ form.hidden_tag() }}
             <div class="form-group">
                 {{ form.username.label }}
