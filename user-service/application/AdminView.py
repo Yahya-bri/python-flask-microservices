@@ -12,7 +12,7 @@ class AdminModelView(ModelView):
 
 class UserAdmin(AdminModelView):
     column_list = ('id', 'username', 'email', 'first_name', 'last_name', 'is_admin', 'date_added', 'date_updated')
-    form_columns = ('username', 'email', 'first_name', 'last_name', 'password', 'is_admin', 'role_groups')
+    form_columns = ('username', 'email', 'first_name', 'last_name', 'password', 'role_groups')
 
     def on_model_change(self, form, model, is_created):
         if form.password.data:
@@ -22,7 +22,7 @@ class UserAdmin(AdminModelView):
     
 class RoleGrpAdmin(AdminModelView):
     column_list = ('id', 'name', 'description')
-    form_columns = ('name', 'description')
+    form_columns = ('name', 'description', 'permissions')
     
 
 class PermissionAdmin(AdminModelView):

@@ -22,7 +22,7 @@ def create_app():
     login_manager.init_app(app)
     login_manager.login_view = 'login'
 
-    admin = Admin(app, name='My Admin Panel', template_mode='bootstrap4')
+    admin = Admin(app, name='Admin Users Panel', template_mode='bootstrap4')
     # Register the models with Flask-Admin
     admin.add_view(UserAdmin(User, db.session))
     admin.add_view(RoleGrpAdmin(RoleGroup, db.session))
@@ -34,4 +34,18 @@ def create_app():
         app.register_blueprint(user_app_blueprint, url_prefix='/user')
         from .user_api import user_api_blueprint
         app.register_blueprint(user_api_blueprint, url_prefix='/user_api')
+
+        # Check if a super user exists, if not, create one
+        super_user = User.query.filter_by(username='SUPER USER').first()
+        if not super_user:
+            super_user = User(
+                username='SUPER USER',
+                email='superuser@example.com',
+                password='admin',
+                is_admin=True
+            )
+            super_user.encode_password()
+            db.session.add(super_user)
+            db.session.commit()
+
         return app
