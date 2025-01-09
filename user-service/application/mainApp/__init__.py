@@ -1,6 +1,6 @@
 # application/user_api/__init__.py
 from flask import Blueprint
 
-user_api_blueprint = Blueprint('user_api', __name__)
+user_app_blueprint = Blueprint('user_app', __name__, template_folder='templates')
 
 from . import routes

@@ -1,10 +1,11 @@
 # application/models.py
-from . import db
 from datetime import datetime, timezone
 from flask_login import UserMixin
 from passlib.hash import sha256_crypt
+from flask_sqlalchemy import SQLAlchemy
 
 
+db = SQLAlchemy()
 
 # Association table for User and RoleGroup
 user_role_group = db.Table('user_role_group',
