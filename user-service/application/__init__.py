@@ -3,9 +3,12 @@ import os
 from flask import Flask
 from flask_login import LoginManager
 from flask_admin import Admin
+from dotenv import load_dotenv
 from .AdminView import UserAdmin, RoleGrpAdmin, PermissionAdmin
 from .models import User, RoleGroup, Permission, db
 
+# Load environment variables from .env file
+load_dotenv()
 
 login_manager = LoginManager()
 
