@@ -6,7 +6,7 @@ from flask import redirect, url_for
 from flask_login import logout_user, login_required
 from flask import request, flash, render_template
 from flask_login import login_user
-from ..forms import LoginForm
+from .forms import LoginForm
 
 
 @login_manager.user_loader
@@ -17,12 +17,12 @@ def load_user(user_id):
 def login():
     form = LoginForm()
     if form.validate_on_submit():
-        user = User.query.filter_by(email=form.email.data).first()
+        user = User.query.filter_by(username=form.username.data).first()
         if user and user.check_password(form.password.data):
             login_user(user, remember=form.remember_me.data)
             return redirect(url_for('index'))
         else:
-            flash('Invalid email or password')
+            flash('Invalid username or password')
     return render_template('login.html', form=form)
 
 @user_app_blueprint.route('/logout')
